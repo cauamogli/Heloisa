@@ -1727,3 +1727,81 @@ body {
     var(--delay)
     forwards;
 }
+
+/* =========================================
+   CONFIRMAÇÃO DE PRESENÇA
+========================================= */
+
+.rsvp-box {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.rsvp-deadline {
+  margin: 0 0 13px !important;
+
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+
+  color: #806687 !important;
+}
+
+.rsvp-deadline strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 17px;
+
+  color: #a269a7;
+}
+
+.whatsapp-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  width: fit-content;
+
+  margin: 0 auto;
+
+  padding: 13px 22px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #25d366,
+      #1ebe5d
+    );
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  box-shadow:
+    0 14px 28px
+    rgba(37, 211, 102, 0.25);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.whatsapp-button span {
+  font-size: 18px;
+}
+
+.whatsapp-button:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 34px
+    rgba(37, 211, 102, 0.35);
+}

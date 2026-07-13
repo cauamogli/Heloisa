@@ -44,7 +44,14 @@ export default function WeddingInvite3D() {
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Brasilia+DF",
   };
+const whatsappNumber = "5561981426894";
 
+const whatsappMessage =
+  "Olá! 🦋💖 Confirmo minha presença no aniversário de 1 aninho da Heloísa! 🎂✨ Estarei presente para celebrar esse momento especial com vocês.";
+
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+  whatsappMessage
+)}`;
   const handleOpen = () => {
     if (open) return;
 
@@ -344,6 +351,26 @@ export default function WeddingInvite3D() {
                 >
                   Ver localização no mapa
                 </a>
+
+                <div className="rsvp-box">
+  <p className="rsvp-deadline">
+    Confirme sua presença até
+    <strong> 27/07</strong>
+  </p>
+
+  <a
+    className="whatsapp-button"
+    href={whatsappUrl}
+    target="_blank"
+    rel="noreferrer"
+    onClick={(event) =>
+      event.stopPropagation()
+    }
+  >
+    <span>💬</span>
+    Confirmar presença
+  </a>
+</div>
 
                 <div className="party-note">
                   Sua presença vai deixar esse dia ainda
