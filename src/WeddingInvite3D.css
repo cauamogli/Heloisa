@@ -1,0 +1,1729 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Great+Vibes&family=Quicksand:wght@400;500;600&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.birthday-book-page {
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  position: relative;
+  padding: 40px 20px;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(255, 226, 241, 0.95),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(224, 213, 255, 0.85),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 75% 85%,
+      rgba(219, 241, 234, 0.8),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #fff9fc,
+      #f8edf7,
+      #eee8fa
+    );
+
+  font-family: "Quicksand", sans-serif;
+  color: #66546d;
+}
+
+/* =====================================================
+   LUZES DO FUNDO
+===================================================== */
+
+.ambient-light {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.ambient-light-one {
+  width: 650px;
+  height: 650px;
+  background: rgba(255, 255, 255, 0.55);
+  animation: ambientOne 6s ease-in-out infinite;
+}
+
+.ambient-light-two {
+  width: 430px;
+  height: 430px;
+  right: -100px;
+  top: -100px;
+  background: rgba(215, 189, 244, 0.35);
+  animation: ambientTwo 7s ease-in-out infinite;
+}
+
+@keyframes ambientOne {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes ambientTwo {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-70px, 60px);
+  }
+}
+
+/* =====================================================
+   BORBOLETAS VOANDO AO ABRIR
+===================================================== */
+
+.butterfly-flight {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flying-butterfly {
+  position: absolute;
+  left: var(--left);
+  bottom: -80px;
+
+  font-size: var(--size);
+  line-height: 1;
+
+  opacity: 0;
+
+  filter:
+    drop-shadow(0 8px 10px rgba(124, 76, 143, 0.2));
+
+  animation:
+    butterflyTakeOff var(--duration)
+    cubic-bezier(0.16, 0.7, 0.27, 1)
+    var(--delay)
+    forwards;
+}
+
+.flying-butterfly::after {
+  content: "";
+  position: absolute;
+  inset: -15px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.65),
+      transparent 65%
+    );
+
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.butterfly-0 {
+  filter:
+    hue-rotate(0deg)
+    drop-shadow(0 8px 10px rgba(136, 78, 155, 0.25));
+}
+
+.butterfly-1 {
+  filter:
+    hue-rotate(35deg)
+    drop-shadow(0 8px 10px rgba(136, 78, 155, 0.25));
+}
+
+.butterfly-2 {
+  filter:
+    hue-rotate(70deg)
+    drop-shadow(0 8px 10px rgba(136, 78, 155, 0.25));
+}
+
+.butterfly-3 {
+  filter:
+    hue-rotate(110deg)
+    drop-shadow(0 8px 10px rgba(136, 78, 155, 0.25));
+}
+
+@keyframes butterflyTakeOff {
+  0% {
+    opacity: 0;
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg)
+      scale(0.4);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  25% {
+    transform:
+      translate3d(
+        calc(var(--drift) * -0.25),
+        -25vh,
+        0
+      )
+      rotate(20deg)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate3d(
+        calc(var(--drift) * 0.45),
+        -55vh,
+        0
+      )
+      rotate(-18deg)
+      scale(0.9);
+  }
+
+  75% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        calc(var(--drift) * 0.75),
+        -82vh,
+        0
+      )
+      rotate(var(--rotation))
+      scale(1);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--drift),
+        -125vh,
+        0
+      )
+      rotate(calc(var(--rotation) * 2))
+      scale(0.5);
+  }
+}
+
+/* =====================================================
+   LIVRO
+===================================================== */
+
+.book-wrapper {
+  position: relative;
+  z-index: 5;
+  perspective: 1800px;
+}
+
+.book-stage {
+  transform-style: preserve-3d;
+}
+
+.book {
+  width: 390px;
+  height: 560px;
+
+  position: relative;
+  transform-style: preserve-3d;
+
+  cursor: pointer;
+
+  transition:
+    width 1s ease,
+    transform 1s ease;
+}
+
+.book-wrapper:not(.is-open) .book:hover {
+  transform:
+    rotateX(7deg)
+    rotateY(-8deg)
+    translateY(-10px);
+}
+
+.book-wrapper.is-open .book {
+  width: 1100px;
+  cursor: default;
+  transform: rotateX(3deg);
+}
+
+/* =====================================================
+   PAINÉIS
+===================================================== */
+
+.panel {
+  position: absolute;
+  top: 0;
+
+  width: 370px;
+  height: 560px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255, 252, 255, 0.97);
+
+  box-shadow:
+    0 24px 60px rgba(96, 62, 108, 0.16),
+    inset 0 0 0 1px rgba(168, 130, 181, 0.15);
+
+  transition:
+    transform 1.2s cubic-bezier(0.18, 0.8, 0.25, 1),
+    opacity 0.55s ease;
+}
+
+.panel::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(243, 195, 224, 0.18),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(200, 183, 235, 0.18),
+      transparent 30%
+    );
+
+  pointer-events: none;
+}
+
+/* ESQUERDA */
+
+.panel-left {
+  left: 0;
+
+  transform-origin: right center;
+
+  border-radius:
+    22px 0 0 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fffafd,
+      #fdf4fa
+    );
+}
+
+/* CENTRO */
+
+.panel-center {
+  left: 10px;
+  z-index: 2;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.82),
+      rgba(255, 255, 255, 0.88)
+    ),
+    radial-gradient(
+      circle at 18% 20%,
+      rgba(231, 183, 222, 0.35),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 85% 76%,
+      rgba(196, 180, 231, 0.3),
+      transparent 26%
+    ),
+    #fff9fd;
+}
+
+/* DIREITA */
+
+.panel-right {
+  right: 0;
+
+  transform-origin: left center;
+
+  border-radius:
+    0 22px 22px 0;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fbf5fc,
+      #f0e8f5
+    );
+}
+
+/* FECHADO */
+
+.book-wrapper:not(.is-open) .panel-left {
+  transform:
+    rotateY(90deg)
+    translateX(185px);
+
+  opacity: 0;
+}
+
+.book-wrapper:not(.is-open) .panel-right {
+  transform:
+    rotateY(-90deg)
+    translateX(-185px);
+
+  opacity: 0;
+}
+
+.book-wrapper:not(.is-open) .panel-center {
+  transform: translateZ(-2px);
+  opacity: 0.25;
+}
+
+/* ABERTO */
+
+.book-wrapper.is-open .panel-left {
+  left: 0;
+
+  transform:
+    translateX(0)
+    rotateY(0deg);
+
+  opacity: 1;
+}
+
+.book-wrapper.is-open .panel-center {
+  left: 365px;
+  opacity: 1;
+}
+
+.book-wrapper.is-open .panel-right {
+  right: 0;
+  opacity: 1;
+}
+
+/* =====================================================
+   CAPA
+===================================================== */
+
+.book-cover {
+  position: absolute;
+  inset: 0;
+
+  z-index: 8;
+
+  border-radius: 26px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 55px 38px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(255, 250, 254, 0.7),
+      rgba(255, 250, 254, 0.82)
+    ),
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(239, 181, 219, 0.55),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(196, 178, 232, 0.5),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #fff7fc,
+      #f1e6f4
+    );
+
+  box-shadow:
+    0 35px 80px rgba(94, 57, 105, 0.28),
+    inset 0 0 0 1px rgba(176, 132, 184, 0.22);
+
+  transform-origin: left center;
+
+  transition:
+    transform 1.25s
+      cubic-bezier(0.18, 0.8, 0.25, 1),
+    opacity 0.6s ease;
+}
+
+.book-cover::before {
+  content: "";
+
+  position: absolute;
+  inset: 22px;
+
+  border:
+    1px solid rgba(168, 116, 178, 0.28);
+
+  border-radius: 20px;
+
+  pointer-events: none;
+}
+
+.book-wrapper.is-open .book-cover {
+  transform: rotateY(-150deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cover-glow {
+  position: absolute;
+
+  width: 250px;
+  height: 250px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.75);
+
+  filter: blur(55px);
+
+  animation:
+    coverGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes coverGlow {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.cover-lines {
+  position: absolute;
+
+  width: 78%;
+  height: 78%;
+
+  border-radius: 48% 52% 48% 52%;
+
+  border:
+    1px solid rgba(165, 113, 178, 0.2);
+
+  transform: rotate(10deg);
+}
+
+.book-cover p {
+  position: relative;
+  z-index: 2;
+
+  margin:
+    35px 0 10px;
+
+  max-width: 260px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 3px;
+
+  font-size: 12px;
+  line-height: 1.6;
+
+  color: #9e7aa4;
+
+  font-weight: 600;
+}
+
+/* NOME HELOÍSA */
+
+.book-cover h1 {
+  position: relative;
+  z-index: 2;
+
+  margin: 5px 0 5px;
+
+  font-family:
+    "Great Vibes",
+    cursive;
+
+  font-size: 84px;
+  line-height: 1;
+
+  font-weight: 400;
+
+  color: #9d6ca8;
+
+  text-shadow:
+    0 5px 20px
+    rgba(151, 103, 162, 0.16);
+}
+
+.cover-age {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  margin-top: -4px;
+}
+
+.cover-age strong {
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size: 86px;
+  line-height: 1;
+
+  color: #c78db9;
+}
+
+.cover-age span {
+  margin-left: 10px;
+
+  font-family:
+    "Great Vibes",
+    cursive;
+
+  font-size: 36px;
+
+  color: #9b7aad;
+}
+
+.cover-divider {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 6px;
+
+  color: #c197c7;
+
+  font-size: 18px;
+}
+
+.cover-divider span:nth-child(2) {
+  font-size: 30px;
+
+  animation:
+    butterflyFloat
+    2.3s ease-in-out infinite;
+}
+
+/* BORBOLETAS DA CAPA */
+
+.cover-butterfly {
+  position: absolute;
+  z-index: 3;
+
+  filter:
+    drop-shadow(
+      0 8px 8px
+      rgba(112, 70, 127, 0.2)
+    );
+
+  animation:
+    butterflyFloat
+    3s ease-in-out infinite;
+}
+
+.cover-butterfly-one {
+  top: 65px;
+  right: 55px;
+
+  font-size: 48px;
+
+  transform: rotate(15deg);
+}
+
+.cover-butterfly-two {
+  left: 55px;
+  bottom: 95px;
+
+  font-size: 34px;
+
+  animation-delay: -1s;
+}
+
+.cover-butterfly-three {
+  left: 75px;
+  top: 100px;
+
+  font-size: 24px;
+
+  animation-delay: -2s;
+}
+
+@keyframes butterflyFloat {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(-4deg);
+  }
+
+  50% {
+    transform:
+      translateY(-12px)
+      rotate(7deg);
+  }
+}
+
+.book-cover small {
+  position: absolute;
+
+  bottom: 48px;
+
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 15px;
+
+  color: #aa8ab0;
+
+  animation:
+    pulseText
+    1.8s ease-in-out infinite;
+}
+
+.click-butterfly {
+  font-size: 21px;
+}
+
+@keyframes pulseText {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+
+/* =====================================================
+   LOMBADA
+===================================================== */
+
+.book-spine {
+  position: absolute;
+
+  left: 364px;
+  top: 0;
+
+  width: 8px;
+  height: 560px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d9bfdc,
+      #fff5fc,
+      #ceb2d2
+    );
+
+  z-index: 6;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.5s ease;
+}
+
+.book-wrapper.is-open .book-spine {
+  opacity: 1;
+}
+
+/* =====================================================
+   CONTEÚDO DOS PAINÉIS
+===================================================== */
+
+.panel-content {
+  position: relative;
+  z-index: 1;
+
+  padding: 44px 38px;
+
+  height: 100%;
+
+  text-align: center;
+}
+
+.panel-content h2 {
+  margin:
+    0 0 18px;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size: 23px;
+
+  letter-spacing: 2px;
+
+  font-weight: normal;
+
+  color: #956c9f;
+}
+
+.panel-content p {
+  margin:
+    0 auto 22px;
+
+  font-size: 13px;
+  line-height: 1.75;
+
+  color: #766579;
+}
+
+.mini-butterfly {
+  margin-bottom: 12px;
+
+  font-size: 38px;
+
+  animation:
+    butterflyFloat
+    2.8s ease-in-out infinite;
+}
+
+.soft-message {
+  margin-top: 25px;
+
+  padding: 18px;
+
+  border-radius: 22px;
+
+  background:
+    rgba(222, 190, 224, 0.22);
+
+  color: #936c9f;
+
+  font-family:
+    "Great Vibes",
+    cursive;
+
+  font-size: 25px;
+  line-height: 1.35;
+
+  border:
+    1px solid
+    rgba(174, 126, 181, 0.18);
+}
+
+.butterfly-trail {
+  margin-top: 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+
+  color: #c092c4;
+}
+
+/* =====================================================
+   CARD CENTRAL
+===================================================== */
+
+.main-card {
+  position: absolute;
+  z-index: 3;
+
+  inset:
+    42px 35px;
+
+  padding:
+    25px 25px;
+
+  text-align: center;
+
+  background:
+    rgba(255, 255, 255, 0.82);
+
+  border:
+    1px solid
+    rgba(168, 124, 176, 0.24);
+
+  border-radius: 190px 190px 25px 25px;
+
+  box-shadow:
+    0 20px 44px
+      rgba(98, 60, 108, 0.11),
+    inset 0 0 0 8px
+      rgba(255, 255, 255, 0.4);
+}
+
+.small-text {
+  margin: 0 0 10px;
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+
+  color: #a884ae;
+}
+
+.birthday-number {
+  height: 82px;
+
+  display: grid;
+  place-items: center;
+}
+
+.birthday-number span {
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size: 84px;
+
+  line-height: 1;
+
+  color: #d19bbf;
+
+  text-shadow:
+    0 8px 20px
+    rgba(173, 118, 164, 0.15);
+}
+
+.main-card h1 {
+  margin:
+    -10px 0 0;
+
+  font-family:
+    "Great Vibes",
+    cursive;
+
+  font-size: 59px;
+
+  letter-spacing: 0;
+
+  text-transform: none;
+
+  font-weight: 400;
+
+  color: #9669a2;
+}
+
+.age-title {
+  margin:
+    -6px 0 12px !important;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size: 16px !important;
+
+  color: #c083ad !important;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+}
+
+.invite-text {
+  max-width: 255px;
+
+  margin:
+    13px auto !important;
+
+  font-size: 12px !important;
+
+  line-height: 1.55 !important;
+
+  color: #706074 !important;
+}
+
+.come-celebrate {
+  margin:
+    10px 0 !important;
+
+  font-family:
+    "Great Vibes",
+    cursive;
+
+  font-size: 25px !important;
+
+  color: #9e70aa !important;
+}
+
+/* DATA */
+
+.date-row {
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin:
+    12px 0 14px;
+}
+
+.date-row > div:not(.day) {
+  padding:
+    8px 0;
+
+  border-top:
+    1px solid
+    rgba(162, 118, 174, 0.3);
+
+  border-bottom:
+    1px solid
+    rgba(162, 118, 174, 0.3);
+}
+
+.date-row strong,
+.date-row span {
+  display: block;
+
+  text-transform: uppercase;
+
+  font-size: 9px;
+
+  letter-spacing: 1.5px;
+
+  color: #79627d;
+}
+
+.day {
+  padding:
+    0 12px;
+
+  font-family:
+    "DM Serif Display",
+    serif;
+
+  font-size: 43px;
+
+  color: #ab79a9;
+
+  border-left:
+    1px solid
+    rgba(162, 118, 174, 0.28);
+
+  border-right:
+    1px solid
+    rgba(162, 118, 174, 0.28);
+}
+
+.address {
+  margin:
+    10px 0 0 !important;
+
+  font-size: 11px !important;
+
+  line-height: 1.5 !important;
+
+  color: #756478 !important;
+}
+
+.signature {
+  margin-top:
+    10px !important;
+
+  font-family:
+    "Great Vibes",
+    cursive;
+
+  font-size: 25px !important;
+
+  color: #986da2 !important;
+}
+
+/* =====================================================
+   BORBOLETAS DECORATIVAS
+===================================================== */
+
+.decorative-butterfly {
+  position: absolute;
+
+  z-index: 4;
+
+  filter:
+    drop-shadow(
+      0 8px 8px
+      rgba(103, 65, 117, 0.15)
+    );
+
+  animation:
+    butterflyFloat
+    3s ease-in-out infinite;
+}
+
+.butterfly-top-left {
+  top: 16px;
+  left: 28px;
+
+  font-size: 42px;
+}
+
+.butterfly-bottom-right {
+  bottom: 20px;
+  right: 25px;
+
+  font-size: 34px;
+
+  animation-delay: -1.5s;
+}
+
+/* BORBOLETAS LATERAIS */
+
+.watercolor-butterflies {
+  position: absolute;
+
+  width: 120px;
+  height: 280px;
+
+  z-index: 2;
+
+  pointer-events: none;
+}
+
+.watercolor-left {
+  left: -20px;
+  bottom: 30px;
+}
+
+.watercolor-right {
+  right: -25px;
+  top: 35px;
+
+  transform:
+    scaleX(-1);
+}
+
+.watercolor-butterflies span {
+  position: absolute;
+
+  opacity: 0.32;
+
+  filter:
+    blur(0.3px)
+    saturate(0.7);
+}
+
+.watercolor-butterflies span:nth-child(1) {
+  left: 15px;
+  bottom: 10px;
+
+  font-size: 50px;
+
+  transform:
+    rotate(-25deg);
+}
+
+.watercolor-butterflies span:nth-child(2) {
+  left: 50px;
+  bottom: 95px;
+
+  font-size: 36px;
+
+  transform:
+    rotate(20deg);
+}
+
+.watercolor-butterflies span:nth-child(3) {
+  left: 15px;
+  bottom: 175px;
+
+  font-size: 26px;
+
+  transform:
+    rotate(-10deg);
+}
+
+/* =====================================================
+   PROGRAMAÇÃO
+===================================================== */
+
+.schedule {
+  text-align: left;
+
+  padding-left: 50px;
+  padding-right: 42px;
+}
+
+.schedule .mini-butterfly {
+  text-align: center;
+}
+
+.schedule h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.schedule-item {
+  display: grid;
+
+  grid-template-columns:
+    42px 1fr;
+
+  align-items: center;
+
+  margin-bottom: 21px;
+}
+
+.schedule-item > span {
+  font-size: 23px;
+}
+
+.schedule-item strong {
+  display: block;
+
+  color: #86658d;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 4px;
+}
+
+.schedule-item p {
+  margin: 0;
+
+  color: #796b7d;
+
+  font-size: 12px;
+}
+
+.location-button {
+  display: block;
+
+  width: fit-content;
+
+  margin:
+    24px auto 0;
+
+  padding:
+    13px 20px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #b981b7,
+      #9d81c5
+    );
+
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  box-shadow:
+    0 14px 28px
+    rgba(128, 82, 139, 0.22);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.location-button:hover {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 18px 34px
+    rgba(128, 82, 139, 0.32);
+}
+
+.party-note {
+  margin-top: 28px;
+
+  padding: 18px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.55);
+
+  color: #806687;
+
+  font-size: 13px;
+  line-height: 1.6;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(160, 116, 172, 0.17);
+}
+
+.party-note span {
+  display: block;
+
+  margin-top: 10px;
+
+  font-size: 27px;
+}
+
+/* =====================================================
+   BOTÃO FECHAR
+===================================================== */
+
+.close-button {
+  display: block;
+
+  margin:
+    34px auto 0;
+
+  border: none;
+
+  border-radius: 999px;
+
+  padding:
+    13px 26px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #b27bad,
+      #9278bc
+    );
+
+  color: #fff;
+
+  font-size: 13px;
+
+  font-family:
+    "Quicksand",
+    sans-serif;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 14px 28px
+    rgba(122, 76, 134, 0.24);
+
+  transition:
+    transform 0.25s ease;
+}
+
+.close-button:hover {
+  transform:
+    translateY(-3px);
+}
+
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+
+@media (max-width: 1180px) {
+  .birthday-book-page {
+    min-height: 100vh;
+    height: auto;
+    align-items: start;
+    overflow-x: hidden;
+    overflow-y: visible;
+
+    padding-top: 45px;
+    padding-bottom: 100px;
+  }
+
+  .book {
+    width: min(88vw, 390px);
+    height: 560px;
+  }
+
+  .book-wrapper.is-open .book {
+    width: min(94vw, 420px);
+
+    height: auto !important;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    transform: none;
+  }
+
+  .panel,
+  .panel-left,
+  .panel-center,
+  .panel-right {
+    position: relative;
+
+    left: auto !important;
+    right: auto !important;
+    top: auto;
+
+    width: 100%;
+
+    height: auto !important;
+    min-height: 560px;
+
+    border-radius: 22px;
+
+    transform: none !important;
+    opacity: 1 !important;
+
+    overflow: hidden;
+  }
+
+  .book-wrapper:not(.is-open) .panel {
+    position: absolute;
+    opacity: 0 !important;
+  }
+
+  .book-wrapper.is-open .book-cover {
+    display: none;
+  }
+
+  .book-spine {
+    display: none;
+  }
+
+  .panel-content {
+    position: relative;
+
+    width: 100%;
+    height: auto !important;
+    min-height: 560px;
+
+    padding: 38px 30px 55px;
+  }
+
+  /* PAINEL DA DIREITA */
+  .panel-right {
+    height: auto !important;
+    min-height: 700px;
+  }
+
+  .panel-right .panel-content {
+    height: auto !important;
+    min-height: 700px;
+
+    padding-top: 38px;
+    padding-bottom: 55px;
+  }
+
+  .schedule {
+    height: auto !important;
+
+    padding-left: 38px;
+    padding-right: 38px;
+    padding-bottom: 55px;
+  }
+
+  .party-note {
+    position: relative;
+
+    width: 100%;
+
+    margin-top: 28px;
+    margin-bottom: 0;
+
+    padding: 18px;
+  }
+
+  .main-card {
+    position: relative;
+    inset: auto;
+
+    margin: 38px 25px;
+
+    min-height: 485px;
+  }
+
+  .book-cover h1 {
+    font-size: 72px;
+  }
+
+  .cover-age strong {
+    font-size: 76px;
+  }
+}
+
+@media (max-width: 480px) {
+  .birthday-book-page {
+    min-height: 100vh;
+    height: auto;
+
+    padding:
+      30px
+      15px
+      120px;
+
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .book-wrapper.is-open,
+  .book-stage,
+  .book-wrapper.is-open .book {
+    height: auto !important;
+    min-height: 0;
+  }
+
+  .panel-right {
+    min-height: 720px;
+  }
+
+  .panel-right .panel-content {
+    min-height: 720px;
+    padding-bottom: 60px;
+  }
+
+  .party-note {
+    margin-bottom: 0;
+  }
+}
+
+.custom-butterfly {
+  object-fit: contain;
+  width: 56px;
+  height: 56px;
+}
+
+.custom-flying-butterfly {
+  width: var(--size);
+  height: var(--size);
+  object-fit: contain;
+}
+
+/* =========================================
+   BORBOLETA PERSONALIZADA DA HELOÍSA
+========================================= */
+
+.mini-butterfly-img {
+  display: block;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 14px;
+  object-fit: contain;
+  animation: butterflyFloat 2.8s ease-in-out infinite;
+  filter: drop-shadow(
+    0 8px 10px rgba(140, 84, 150, 0.2)
+  );
+}
+
+/* TRILHA DO PAINEL ESQUERDO */
+
+.butterfly-trail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.trail-butterfly {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* BORBOLETAS DO CENTRO */
+
+.decorative-butterfly-img {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.butterfly-top-left {
+  top: 10px;
+  left: 15px;
+}
+
+.butterfly-bottom-right {
+  bottom: 10px;
+  right: 15px;
+}
+
+/* BORBOLETAS TRANSPARENTES LATERAIS */
+
+.water-butterfly {
+  position: absolute;
+  object-fit: contain;
+
+  opacity: 0.2;
+
+  filter:
+    saturate(0.8)
+    drop-shadow(
+      0 6px 8px rgba(126, 78, 139, 0.12)
+    );
+}
+
+.water-butterfly-1 {
+  left: 5px;
+  bottom: 5px;
+
+  width: 75px;
+  height: 75px;
+
+  transform: rotate(-25deg);
+}
+
+.water-butterfly-2 {
+  left: 45px;
+  bottom: 100px;
+
+  width: 58px;
+  height: 58px;
+
+  transform: rotate(20deg);
+}
+
+.water-butterfly-3 {
+  left: 10px;
+  bottom: 190px;
+
+  width: 42px;
+  height: 42px;
+
+  transform: rotate(-10deg);
+}
+
+/* BORBOLETAS DA CAPA */
+
+.cover-butterfly-img {
+  object-fit: contain;
+}
+
+.cover-butterfly-one.cover-butterfly-img {
+  width: 82px;
+  height: 82px;
+
+  top: 45px;
+  right: 40px;
+}
+
+.cover-butterfly-two.cover-butterfly-img {
+  width: 62px;
+  height: 62px;
+
+  left: 40px;
+  bottom: 80px;
+}
+
+.cover-butterfly-three.cover-butterfly-img {
+  width: 48px;
+  height: 48px;
+
+  left: 55px;
+  top: 75px;
+}
+
+/* BORBOLETA ENTRE AS ESTRELAS */
+
+.cover-divider-butterfly {
+  width: 44px;
+  height: 44px;
+
+  object-fit: contain;
+
+  animation:
+    butterflyFloat
+    2.3s ease-in-out infinite;
+}
+
+/* BORBOLETA PERTO DE "CLIQUE PARA ABRIR" */
+
+.click-butterfly-img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+}
+
+/* BORBOLETA DO QUADRO FINAL */
+
+.party-note-butterfly {
+  display: block;
+
+  width: 48px;
+  height: 48px;
+
+  margin: 12px auto 0;
+
+  object-fit: contain;
+
+  animation:
+    butterflyFloat
+    2.8s ease-in-out infinite;
+}
+
+/* BORBOLETAS VOANDO */
+
+.custom-flying-butterfly {
+  position: absolute;
+
+  left: var(--left);
+  bottom: -100px;
+
+  width: var(--size);
+  height: var(--size);
+
+  object-fit: contain;
+
+  opacity: 0;
+
+  filter:
+    drop-shadow(
+      0 8px 14px rgba(115, 65, 130, 0.25)
+    );
+
+  animation:
+    butterflyTakeOff
+    var(--duration)
+    cubic-bezier(0.16, 0.7, 0.27, 1)
+    var(--delay)
+    forwards;
+}
