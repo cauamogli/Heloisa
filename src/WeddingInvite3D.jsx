@@ -20,6 +20,7 @@ function ButterflyImage({
       src="/images/heloisa-borboleta.png"
       alt={alt}
       className={className}
+      decoding="async"
     />
   );
 }
@@ -57,11 +58,18 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
 
     setOpen(true);
 
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.volume = 0.5;
+    const audio = audioRef.current;
 
-      audioRef.current.play().catch((error) => {
+    if (audio) {
+      audio.volume = 0.5;
+
+      // com preload="none" o áudio ainda não carregou aqui, e mexer
+      // em currentTime antes disso falha em alguns navegadores
+      if (audio.readyState > 0) {
+        audio.currentTime = 0;
+      }
+
+      audio.play().catch((error) => {
         console.log(
           "O navegador bloqueou a reprodução do áudio:",
           error
@@ -75,19 +83,26 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
 
     setOpen(false);
 
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+    const audio = audioRef.current;
+
+    if (audio) {
+      audio.pause();
+
+      if (audio.readyState > 0) {
+        audio.currentTime = 0;
+      }
     }
   };
 
   return (
     <section className="birthday-book-page">
       {/* SOM */}
+      {/* preload="none": o mp3 tem 8 MB e travava o carregamento no celular.
+          o áudio começa a baixar só no clique, já tocando durante o download. */}
       <audio
         ref={audioRef}
         src="/sounds/borboletas.mp3"
-        preload="auto"
+        preload="none"
       />
 
       {/* FUNDO */}
@@ -105,6 +120,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
               key={butterfly.id}
               src="/images/heloisa-borboleta.png"
               alt=""
+              decoding="async"
               className="flying-butterfly custom-flying-butterfly"
               style={{
                 "--left": `${butterfly.left}%`,
@@ -128,6 +144,20 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
           <div
             className="book"
             onClick={handleOpen}
+            role={open ? undefined : "button"}
+            tabIndex={open ? undefined : 0}
+            aria-label={
+              open ? undefined : "Abrir convite"
+            }
+            onKeyDown={(event) => {
+              if (
+                event.key === "Enter" ||
+                event.key === " "
+              ) {
+                event.preventDefault();
+                handleOpen();
+              }
+            }}
           >
             <div className="book-spine"></div>
 

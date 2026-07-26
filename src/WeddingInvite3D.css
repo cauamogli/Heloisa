@@ -252,16 +252,25 @@ body {
 
   cursor: pointer;
 
+  /* remove o atraso do duplo-toque no celular */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
   transition:
     width 1s ease,
     transform 1s ease;
 }
 
-.book-wrapper:not(.is-open) .book:hover {
-  transform:
-    rotateX(7deg)
-    rotateY(-8deg)
-    translateY(-10px);
+/* o hover 3D só vale onde existe mouse de verdade.
+   no celular, o primeiro toque virava "hover" em vez de clique,
+   obrigando a tocar duas vezes para abrir o convite. */
+@media (hover: hover) and (pointer: fine) {
+  .book-wrapper:not(.is-open) .book:hover {
+    transform:
+      rotateX(7deg)
+      rotateY(-8deg)
+      translateY(-10px);
+  }
 }
 
 .book-wrapper.is-open .book {
@@ -1273,13 +1282,15 @@ body {
     box-shadow 0.25s ease;
 }
 
-.location-button:hover {
-  transform:
-    translateY(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .location-button:hover {
+    transform:
+      translateY(-3px);
 
-  box-shadow:
-    0 18px 34px
-    rgba(128, 82, 139, 0.32);
+    box-shadow:
+      0 18px 34px
+      rgba(128, 82, 139, 0.32);
+  }
 }
 
 .party-note {
@@ -1354,9 +1365,11 @@ body {
     transform 0.25s ease;
 }
 
-.close-button:hover {
-  transform:
-    translateY(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .close-button:hover {
+    transform:
+      translateY(-3px);
+  }
 }
 
 /* =====================================================
@@ -1798,10 +1811,59 @@ body {
   font-size: 18px;
 }
 
-.whatsapp-button:hover {
-  transform: translateY(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .whatsapp-button:hover {
+    transform: translateY(-3px);
 
-  box-shadow:
-    0 18px 34px
-    rgba(37, 211, 102, 0.35);
+    box-shadow:
+      0 18px 34px
+      rgba(37, 211, 102, 0.35);
+  }
+}
+
+/* =========================================
+   DESEMPENHO NO CELULAR
+========================================= */
+
+@media (max-width: 1180px) {
+  /* blur grande recalculado a cada quadro trava a GPU do celular.
+     mantém o brilho, sem o custo por frame. */
+  .ambient-light {
+    animation: none;
+    filter: blur(45px);
+    opacity: 0.75;
+  }
+
+  .cover-glow {
+    animation: none;
+    filter: blur(40px);
+    opacity: 0.7;
+  }
+
+  /* 18 borboletas com sombra animada ao mesmo tempo é demais
+     para celular: mantém as 8 primeiras. */
+  .flying-butterfly:nth-child(n + 9) {
+    display: none;
+  }
+
+  /* sombra projetada animada é cara; a borboleta continua flutuando */
+  .cover-butterfly,
+  .decorative-butterfly {
+    filter: none;
+  }
+}
+
+/* respeita quem desativou animações no sistema */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-light,
+  .cover-glow,
+  .cover-butterfly,
+  .decorative-butterfly,
+  .cover-divider-butterfly,
+  .mini-butterfly-img,
+  .party-note-butterfly,
+  .book-cover small,
+  .cover-divider span:nth-child(2) {
+    animation: none !important;
+  }
 }

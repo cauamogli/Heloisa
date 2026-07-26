@@ -1,1 +1,5 @@
 .vercel
+.env*
+
+# saida do build - o Vercel gera isso sozinho a cada deploy
+dist
