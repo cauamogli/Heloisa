@@ -32,17 +32,17 @@ export default function WeddingInvite3D() {
     nome: "Heloísa",
     idade: "1 aninho",
 
-    dataSemana: "Sábado",
+    dataSemana: "Domingo",
     mes: "Agosto",
-    dia: "?",
+    dia: "23",
     ano: "2026",
-    hora: "?",
+    hora: "15:00",
 
-    local: "Local da Festa",
-    endereco: "Cauã não sabe o endereço ainda",
+    local: "Local da festa",
+    endereco: "Krr eventos- Arapoanga, Planaltina-DF",
 
     mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Brasilia+DF",
+      "https://maps.app.goo.gl/a6KU88vZ85QDHQty8",
   };
 const whatsappNumber = "5561981426894";
 
@@ -223,7 +223,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
 
               <article className="main-card">
                 <p className="small-text">
-                 
+                  Celebre o primeiro aniversário de {convite.nome}!
                 </p>
 
                 <div className="birthday-number">
@@ -315,6 +315,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                     </p>
                   </div>
                 </div>
+                
 
                 <div className="schedule-item">
                   <span>⏰</span>
@@ -339,6 +340,17 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                     </p>
                   </div>
                 </div>
+                <div className="schedule-item">
+  <span>💦</span>
+
+  <div>
+    <strong>Não esqueça!</strong>
+
+    <p>
+      Traga seu traje de banho, toalha e muita animação para brincar na piscina! 🦋☀️
+    </p>
+  </div>
+</div>
 
                 <a
                   className="location-button"
@@ -355,7 +367,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                 <div className="rsvp-box">
   <p className="rsvp-deadline">
     Confirme sua presença até
-    <strong> 27/07</strong>
+    <strong> 10/08</strong>
   </p>
 
   <a
@@ -408,6 +420,8 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
                   cover-butterfly-img
                 "
               />
+
+              
 
               <div className="cover-lines"></div>
 
